@@ -1,0 +1,17 @@
+# Ignorar datasets
+data/
+gold/assignment1_resnet/data/
+**/data/
+
+# Ignorar imágenes sueltas
+*.jpg
+*.jpeg
+*.png
+
+# Ignorar entornos virtuales
+.venv/
+.venv310/
+
+# Ignorar archivos temporales
+__pycache__/
+*.pyc
