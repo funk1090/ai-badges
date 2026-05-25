@@ -53,9 +53,15 @@ class RAGPipeline:
         query_emb = self.embedder.encode([query], convert_to_numpy=True)
         distances, indices = self.index.search(np.array(query_emb).astype('float32'), k)
         return [self.documents[i] for i in indices[0] if i != -1]
-
+        
     def generate_answer(self, query):
         context_docs = self.retrieve(query)
+        # debug: show which docs were retrieved
+        print("DEBUG: Retrieved documents:")
+        for i, d in enumerate(context_docs):
+            snippet = d[:120].replace("\n", " ")
+            print(f"--- Doc {i+1} (first 120 chars): {snippet}")
+
         context = "\n\n".join(context_docs)
 
         prompt = f"""You are a helpful assistant. Use the following context to answer the question.
