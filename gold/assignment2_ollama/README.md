@@ -1,88 +1,87 @@
-# Gold Assignment 2 — Python Client for Ollama
+# 📘 **Gold Assignment 2 — Ollama Chat Client (Python)**
 
-This module contains a minimal and clean Python client for interacting with **Ollama**, a local LLM runtime that allows you to run models such as LLaMA, Mistral, Phi, Gemma, and others directly on your machine.
+This module implements a **Python chat client** for interacting with local Large Language Models (LLMs) running through **Ollama**, such as Llama 3, Mistral, Phi, Gemma, and others.
 
----
+The goal of this assignment is to demonstrate how to:
 
-## 📌 Purpose
-
-The goal of this assignment is to:
-- Understand how to interact programmatically with a local LLM
-- Send prompts and receive responses using Python
-- Build a reusable client that can be integrated into larger pipelines
-- Explore local inference without relying on cloud APIs
+- Send prompts to a local LLM via the Ollama API  
+- Maintain a conversation with message history  
+- Receive responses programmatically  
+- Build a reusable and extensible chat client  
 
 ---
 
-## 📂 Contents
+## 📂 Project Structure
 
-- `ollama_client.py` — Python wrapper for sending prompts to an Ollama model  
-- `README.md` — Documentation for setup and usage  
+- `ollama_chat_client.py` — Chat client using the `/api/chat` endpoint  
+- `README.md` — Documentation for this assignment  
 
 ---
 
 ## ⚙️ Requirements
 
-To run this module, you need:
-
-### **1. Ollama installed locally**
+### 1. Install Ollama  
 Download from:  
-https://ollama.com/download
+[https://ollama.com/download](https://ollama.com/download)
 
-### **2. At least one model pulled**
+### 2. Pull at least one model  
 Example:
 
+```
 ollama pull llama3
+```
 
+### 3. Install Python dependencies  
+Only `requests` is required:
 
-or
-
-ollama pull mistral
-
-
-### **3. Python dependencies**
-(Handled by your main `requirements.txt`)
-
----
-
-## 🚀 How to Run
-
-### **Run the client script**
-
-python ollama_client.py
-
-
-Inside the script, you can customize:
-- The model name  
-- The prompt  
-- The temperature  
-- The max tokens  
+```
+pip install requests
+```
 
 ---
 
-## 🧠 Example Usage (inside the script)
+## 🚀 How to Run the Chat Client
+
+Run:
+
+```
+python ollama_chat_client.py
+```
+
+You will see:
+
+```
+Chat started. Type 'exit' to quit.
+
+You: Hello
+Model: Hello! How can I help you today?
+```
+
+You can continue chatting naturally thanks to the internal message history.
+
+---
+
+## 🧠 How the Client Works
+
+The file `ollama_chat_client.py` implements:
+
+- A wrapper around the `/api/chat` endpoint  
+- Persistent conversation history  
+- Support for any Ollama model  
+- A simple interactive loop  
+
+Example usage inside the script:
 
 ```python
-from ollama_client import OllamaClient
+chat = OllamaChatClient(model="llama3")
+reply = chat.ask("Explain transfer learning in simple terms.")
+print(reply)
+```
 
-client = OllamaClient(model="llama3")
-response = client.ask("Explain transfer learning in simple terms.")
-print(response)
+---
 
-📝 Notes
-This module is intentionally simple and modular
+## 📌 Notes
 
-It can be extended to support streaming, embeddings, or chat history
-
-Works offline once models are downloaded
-
-Ideal for integrating into RAG or agent pipelines
-
-🔧 Next Steps (optional)
-Add support for embeddings
-
-Add a streaming response mode
-
-Integrate with FAISS or GPT4ALL
-
-Build a CLI wrapper
+- Works fully offline once the model is downloaded  
+- Ideal for local experimentation, RAG pipelines, or agent systems  
+- Can be extended to support streaming, embeddings, or multi‑model routing  
