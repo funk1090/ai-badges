@@ -1,120 +1,113 @@
-# Gold Assignment 3 — RAG with GPT4ALL + FAISS
+Gold Assignment 3 — Local RAG Pipeline with GPT4All and FAISS
+This assignment implements a local Retrieval‑Augmented Generation (RAG) pipeline using:
 
-This module implements a complete **Retrieval‑Augmented Generation (RAG)** pipeline using:
+Sentence‑Transformers for dense embeddings
 
-- **GPT4ALL** as a local LLM  
-- **FAISS** as a vector store  
-- **SentenceTransformers** for embeddings  
-- **Python** for orchestration  
+FAISS for vector search
 
-The goal is to build a fully local RAG system capable of indexing documents, retrieving relevant chunks, and generating context‑aware responses.
+GPT4All as a fully local LLM for answer generation
 
----
+The goal is to demonstrate how to build an end‑to‑end RAG system that retrieves relevant information from local documents and uses it to generate grounded responses.
 
-## 📂 Contents
+📂 Project Structure
+gold/assignment3_rag_gpt4all/
+ ├── rag_pipeline.py
+ ├── documents/
+ │     ├── transfer_learning.txt
+ │     ├── computer_vision.txt
+ │     └── ai_history.txt
+ ├── vector_store.faiss
+ ├── README.md
+ └── requirements.txt
 
-- `rag_gpt4all.ipynb` — Full notebook with explanations and step‑by‑step execution  
-- `rag_gpt4all.py` — Script version of the RAG pipeline  
-- `data/` — Folder for raw text documents to index (not included in the repo)  
+File descriptions
 
----
+rag_pipeline.py — Main RAG pipeline (embeddings → FAISS retrieval → GPT4All generation).
 
-## 🧠 Features
+documents/ — Source text files used for retrieval.
 
-- Document loading and preprocessing  
-- Text chunking with configurable size and overlap  
-- Embedding generation using SentenceTransformers  
-- FAISS index creation and similarity search  
-- Local inference using GPT4ALL models (`.gguf`)  
-- RAG pipeline combining retrieval + generation  
+vector_store.faiss — Saved FAISS index (created automatically on first run).
 
----
+requirements.txt — Python dependencies for the assignment.
+⚙️ Requirements
+Install dependencies:
+pip install -r requirements.txt
 
-## ⚙️ Requirements
+Typical requirements.txt:
+gpt4all
+sentence-transformers
+faiss-cpu
+numpy
+torch
+transformers
 
-### **1. GPT4ALL installed**
-Download from:  
-https://gpt4all.io
+Notes:
 
-Or install via pip:
+The first run downloads the embedding model and the GPT4All model.
 
-pip install gpt4all
+The pipeline forces CPU for embeddings to avoid CUDA compatibility issues.
 
+GPT4All will run on CPU unless a compatible GPU backend is available.
 
-### **2. A `.gguf` model downloaded**
-Examples:
+🚀 How to Run
+From the root of the repository:
+cd gold/assignment3_rag_gpt4all
+python rag_pipeline.py
+On first run:
 
-- `mistral-7b-instruct.gguf`
-- `llama3-8b-instruct.gguf`
-- `phi-3-mini.gguf`
+Documents are loaded
 
-Place the model in your GPT4ALL models directory.
+Embeddings are computed
 
-### **3. Python dependencies**
-Handled by your main `requirements.txt`.
+A FAISS index is built and saved
 
----
+GPT4All loads the local model
 
-## 🚀 How to Run
+On subsequent runs, the FAISS index loads instantly.
 
-### **Run the script**
+🧠 How the RAG Pipeline Works
+Load documents from the documents/ folder
 
-python rag_gpt4all.py
+Encode documents using all-MiniLM-L6-v2
 
+Build or load a FAISS vector index
 
-### **Run the notebook**
-Open `rag_gpt4all.ipynb` in:
+Retrieve top‑k documents for a user query
 
-- VS Code  
-- Jupyter  
-- Google Colab (recommended for GPU embeddings)  
+Construct a context prompt
 
----
+Generate an answer using GPT4All with the retrieved context
 
-## 📁 Dataset Structure
+This ensures answers are grounded in your local documents.
 
-Place your documents inside:
+💬 Example Usage
+Ready. Ask something (type 'exit' to quit):
 
-data/
-├── doc1.txt
-├── doc2.txt
-└── ...
+You: What is transfer learning?
+Model: Transfer learning is a machine learning technique where a model trained on one task is reused...
 
+You: What does computer vision do?
+Model: Computer vision is a field of artificial intelligence focused on enabling machines to interpret...
 
-The pipeline will automatically:
+You: When did AI research begin?
+Model: Artificial intelligence research began in the 1950s with early symbolic systems...
+🧪 Recommended Test Prompts
+These prompts validate retrieval and grounding:
 
-- Load all `.txt` files  
-- Chunk them  
-- Embed them  
-- Build a FAISS index  
+What is transfer learning?
 
----
+What does computer vision do?
 
-## 🧪 Example Query (inside the script)
+When did AI research begin?
 
-```python
-from rag_gpt4all import RAGPipeline
+Explain how you can reuse a pretrained model for a new task.
 
-rag = RAGPipeline()
-response = rag.ask("Explain the main ideas of document 1.")
-print(response)
+Who invented the transformer architecture. (tests out‑of‑document behavior)
+📌 Notes
+The pipeline runs fully offline once models are downloaded.
 
-📝 Notes
-Models are not included in the repository
+FAISS indexing is saved to speed up future runs.
 
-FAISS indexes are generated locally and ignored by .gitignore
+You can extend the system with chunking, metadata, or larger document sets.
 
-This module is fully offline once models and embeddings are available
-
-Ideal foundation for agent‑based systems or advanced RAG architectures
-
-🔧 Possible Extensions
-Add metadata filtering
-
-Add support for PDFs
-
-Add streaming responses
-
-Replace FAISS with ChromaDB
-
-Integrate with AutoGen agents
+To use a different GPT4All model, change the model_name in rag_pipeline.py.
