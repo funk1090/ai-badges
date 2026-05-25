@@ -1,0 +1,1 @@
+Computer vision is a field of artificial intelligence focused on enabling machines to interpret and understand visual information. Typical tasks include image classification, object detection, segmentation, and tracking. Modern computer vision systems often rely on convolutional neural networks.

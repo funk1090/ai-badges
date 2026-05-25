@@ -1,0 +1,1 @@
+Transfer learning is a machine learning technique where a model trained on one task is reused as the starting point for a model on a second task. It is especially useful when the new task has limited data. A common example is using a model pretrained on ImageNet and fine‑tuning it for a smaller custom dataset.

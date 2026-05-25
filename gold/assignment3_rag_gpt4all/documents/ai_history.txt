@@ -1,0 +1,1 @@
+Artificial intelligence research began in the 1950s with early symbolic systems. Progress accelerated in the 2010s with the rise of deep learning, driven by large datasets and GPU computing. Today, AI is used in natural language processing, robotics, computer vision, and many other fields.
