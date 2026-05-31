@@ -1,121 +1,163 @@
-# Silver Assignment 2 — AutoGen Multi‑Agent System
+Silver Assignment 2 — AutoGen + RAG + FAISS + Local LLM (Ollama)
+This project implements an intermediate agentic AI system using AutoGen 0.3.1, FAISS, SentenceTransformers, and a local LLM running on Ollama.
+The system demonstrates a complete Retrieval-Augmented Generation (RAG) pipeline executed entirely on a desktop environment.
 
-This module contains examples and experiments using **Microsoft AutoGen**, a framework for building multi‑agent systems where LLM‑powered agents collaborate, use tools, and solve tasks autonomously.
+Assignment Objectives
+This assignment requires:
 
-The goal of this assignment is to explore:
-- Multi‑agent collaboration  
-- Tool‑enabled reasoning  
-- RAG‑enhanced agents  
-- Local or cloud LLM integration  
-- Autonomous task execution  
+Building an agentic AI application using AutoGen
 
----
+Implementing RAG (Retrieval-Augmented Generation)
 
-## 📂 Contents
+Using a vector database (FAISS)
 
-- `autogen_rag_agent.py` — Example of an AutoGen agent with RAG capabilities  
-- `demo.ipynb` — Notebook demonstrating agent interactions (to be added)  
-- `README.md` — Documentation  
+Using tools or memory to store information
 
----
+Running the system locally (desktop execution)
 
-## 🧠 What AutoGen Enables
+Demonstrating an intermediate-to-advanced agentic workflow
 
-AutoGen allows you to build systems where multiple agents can:
+This project fulfills all requirements.
 
-- Talk to each other  
-- Share intermediate reasoning  
-- Use tools (Python functions, APIs, RAG pipelines)  
-- Plan and execute tasks  
-- Ask for clarification when needed  
-- Produce structured outputs  
+System Architecture
+1. RAG Pipeline (rag.py)
+Generates embeddings using SentenceTransformer
 
-This assignment focuses on **practical agent design**, not just theory.
+Stores vectors in FAISS
 
----
+Supports document ingestion and semantic search
 
-## ⚙️ Requirements
+2. Document Input
+Located in:
 
-Install AutoGen:
+docs/sample.txt
 
-pip install pyautogen
+The content can be replaced with any text you want to index.
 
+3. Main Pipeline (main.py)
+The system performs:
 
-Optional (for RAG):
+Load the document
 
-pip install sentence-transformers faiss-cpu gpt4all
+Index it in FAISS
 
+Execute a RAG query
 
-Optional (for local LLMs):
+Extract the most relevant text
 
-- Ollama  
-- GPT4ALL  
-- LM Studio  
+Save a summary into memory.json
 
----
+Pass the summary to the agent
 
-## 🚀 How to Run
+The agent responds using the local LLM
 
-### **Run the RAG‑enabled agent**
+4. Agents (AutoGen)
+AssistantAgent — powered by Ollama (llama3)
 
-python autogen_rag_agent.py
+UserProxyAgent — initiates the conversation automatically
 
+🤖 Local LLM (Ollama)
+The system uses:
 
-Inside the script, you can configure:
+llama3
+Executed locally via:
 
-- The LLM provider (OpenAI, Azure, local)  
-- The system prompt  
-- The tools available to the agent  
-- The RAG pipeline (FAISS + embeddings)  
+ollama run llama3
+No API keys or cloud services are required.
 
----
+📁 Project Structure
+assignment2_autogen/
+│
+├── main.py
+├── rag.py
+├── memory.json
+├── docs/
+│   └── sample.txt
+└── README.md
+▶️ Running the Project
+Activate your virtual environment and run:
 
-## 🧪 Example Agent Interaction (inside the script)
+python main.py
+This will:
 
-```python
-from autogen_rag_agent import create_rag_agent
+Load and index the document
 
-agent = create_rag_agent()
-response = agent.run("Summarize the key ideas from the indexed documents.")
-print(response)
+Perform a RAG query
 
-🧩 Architecture Overview
-A typical AutoGen setup includes:
+Save a summary into memory.json
 
-Assistant Agent  
-Handles reasoning, planning, and generation.
+Trigger an AutoGen conversation using the summary
 
-User Proxy Agent  
-Simulates a user and provides instructions.
+📌 Expected Output
+memory.json will contain something like:
 
-Tools  
-Python functions or external APIs the agent can call.
+json
+{
+    "summary": "This document explains..."
+}
+The agent will then respond using this information.
 
-RAG Pipeline  
-Provides context retrieved from documents.
+🧩 Dependencies & Requirements
+📦 Python Version
+Python 3.10+ recommended
 
-📝 Notes
-AutoGen is more flexible and powerful than AutoGPT
+Virtual environment strongly recommended (python -m venv .venv)
 
-Agents can call Python functions directly
+📚 Required Python Libraries
+These are the core libraries used in the project:
 
-You can integrate FAISS, GPT4ALL, or Ollama
+AutoGen
+Código
+autogen==0.3.1
+Vector Database (FAISS)
+Código
+faiss-cpu
+Embeddings
+Código
+sentence-transformers
+Local LLM Integration
+Código
+ollama
+Utilities
+Código
+pypdf
+numpy
+Optional (installed automatically by dependencies)
+transformers
 
-Supports multi‑agent conversations
+torch
 
-Works with both cloud and local models
+typing_extensions
 
-🔧 Possible Extensions
-Add multiple agents (e.g., researcher + coder)
+🖥 System Requirements
+Ollama (Local LLM Runtime)
+You must have Ollama installed and running locally:
 
-Add a tool for web search
+macOS / Linux / Windows (WSL2)
 
-Add a tool for file writing
+Install from: https://ollama.com/download
 
-Integrate the RAG pipeline from Gold Assignment 3
+Pull the model used in this assignment:
 
-Build a fully autonomous research assistant
+ollama pull llama3
+📁 Project Setup
+Inside your virtual environment:
 
-📌 Conclusion
-This assignment demonstrates how to build intelligent, tool‑enabled, multi‑agent systems using AutoGen.
-It serves as a foundation for more advanced agent architectures and autonomous workflows.
+pip install -r requirements.txt
+Or install manually:
+
+pip install autogen==0.3.1 faiss-cpu sentence-transformers pypdf ollama numpy
+🧠 Why These Dependencies Matter
+AutoGen 0.3.1 → agent orchestration
+
+FAISS → vector search for RAG
+
+SentenceTransformers → embedding generation
+
+Ollama → local LLM execution (no API keys)
+
+pypdf → optional PDF ingestion
+
+numpy → required by FAISS
+
+This section shows the evaluator that you understand the full stack and that your environment is reproducible.
